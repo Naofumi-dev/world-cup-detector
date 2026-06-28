@@ -21,8 +21,9 @@ from pathlib import Path
 from . import predictor, service
 from .features import TeamState, match_features
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-DEFAULT_BRACKET = DATA_DIR / "wc2026.json"
+# The bracket ships with the code (next to this module) rather than under data/,
+# which is a persistent Docker volume that would shadow a newly-added file.
+DEFAULT_BRACKET = Path(__file__).resolve().parent / "wc2026.json"
 
 _TOURNAMENT = "FIFA World Cup"
 
