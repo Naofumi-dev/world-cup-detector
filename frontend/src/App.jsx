@@ -7,6 +7,7 @@ import AddResult from "./components/AddResult.jsx";
 import ModelStatus from "./components/ModelStatus.jsx";
 import TeamDetail from "./components/TeamDetail.jsx";
 import StatBand from "./components/StatBand.jsx";
+import TournamentSimulator from "./components/TournamentSimulator.jsx";
 import Toasts from "./components/Toasts.jsx";
 
 export default function App() {
@@ -208,6 +209,8 @@ export default function App() {
                 <RecentMatches matches={matches} onSelect={openDetail} />
               </div>
             </div>
+
+            <TournamentSimulator onSelect={openDetail} />
           </div>
         )}
       </div>

@@ -30,4 +30,9 @@ export const api = {
     request("/matches", { method: "POST", body: JSON.stringify(body) }),
   model: () => request("/model"),
   retrain: () => request("/model/retrain", { method: "POST" }),
+  simulate: (runs) =>
+    request("/tournament/simulate", {
+      method: "POST",
+      body: JSON.stringify(runs ? { runs } : {}),
+    }),
 };

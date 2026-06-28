@@ -124,6 +124,26 @@ def predict_features(model, feats: dict) -> dict:
     return out
 
 
+def predict_many(model, feats_list: list[dict]) -> list[dict]:
+    """Vectorised predict: one DataFrame + predict_proba for many feature rows.
+
+    Far cheaper than calling predict_features in a loop (used by the tournament
+    simulator, which scores ~1k fixtures per run).
+    """
+    if not feats_list:
+        return []
+    rows = [[f[name] for name in FEATURE_NAMES] for f in feats_list]
+    X = pd.DataFrame(rows, columns=FEATURE_NAMES)
+    proba = model.predict_proba(X)
+    out = []
+    for p in proba:
+        d = {"home_win": 0.0, "draw": 0.0, "away_win": 0.0}
+        for cls, val in zip(model.classes_, p):
+            d[LABEL_TO_KEY[cls]] = float(val)
+        out.append(d)
+    return out
+
+
 def predict_fixture(model, home_state, away_state, neutral: bool, tournament: str) -> dict:
     """Convenience: build features from team states and predict."""
     feats = match_features(home_state, away_state, neutral, tournament)

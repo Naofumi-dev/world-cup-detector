@@ -98,3 +98,25 @@ class TeamDetail(BaseModel):
     team: TeamOut
     recent_matches: list[MatchOut]
     rating_history: list[RatingPoint]
+
+
+class TournamentRequest(BaseModel):
+    runs: int = Field(default=3000, ge=100, le=20000)
+
+
+class TournamentTeamOdds(BaseModel):
+    team: str
+    group: str
+    elo: float
+    advance_group: float
+    reach_quarterfinal: float
+    reach_semifinal: float
+    reach_final: float
+    win_title: float
+    known: bool
+
+
+class TournamentResponse(BaseModel):
+    runs: int
+    teams: list[TournamentTeamOdds]
+    unknown_teams: list[str] = []

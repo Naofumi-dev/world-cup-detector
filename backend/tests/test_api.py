@@ -161,3 +161,27 @@ def test_model_info_and_retrain(client):
     retrained = client.post("/api/model/retrain").json()
     assert "accuracy" in retrained
     assert retrained["n_samples"] > 0
+
+
+def test_tournament_simulate(client):
+    r = client.post("/api/tournament/simulate", json={"runs": 200})
+    assert r.status_code == 200
+    data = r.json()
+    assert data["runs"] == 200
+
+    teams = data["teams"]
+    assert len(teams) == 48  # 12 groups of 4 in the default 2026 bracket
+
+    for t in teams:
+        for k in ("advance_group", "reach_quarterfinal", "reach_semifinal",
+                  "reach_final", "win_title"):
+            assert 0.0 <= t[k] <= 1.0
+        # Each stage is a subset of the previous one.
+        assert (t["advance_group"] >= t["reach_quarterfinal"] >= t["reach_semifinal"]
+                >= t["reach_final"] >= t["win_title"])
+
+    # Exactly one champion per simulated tournament.
+    assert abs(sum(t["win_title"] for t in teams) - 1.0) < 0.02
+    # Results are returned sorted by title odds.
+    titles = [t["win_title"] for t in teams]
+    assert titles == sorted(titles, reverse=True)
