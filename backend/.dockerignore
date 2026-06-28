@@ -1,0 +1,8 @@
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+tests
+data/wcd.db
+models/model.joblib
+models/metrics.json

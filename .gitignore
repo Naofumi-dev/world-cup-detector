@@ -1,0 +1,21 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated data + model artifacts (recreated on first run)
+backend/data/wcd.db
+backend/models/model.joblib
+backend/models/metrics.json
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# Local tooling / editor config
+.claude/
+*.log
+
+# OS
+.DS_Store
