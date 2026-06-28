@@ -13,20 +13,23 @@ so no database setup is required.
 
 ### Option 0 — One command (recommended)
 
-Run this on the VPS. It installs Docker if missing, clones the repo, and starts
-the backend behind **Caddy** (automatic HTTPS via Let's Encrypt — no certbot):
+For a VPS that already runs **Traefik** as its reverse proxy. This installs
+Docker if missing, clones the repo, auto-detects Traefik's Docker network,
+removes any leftover Caddy container, and (re)creates the backend wired into
+Traefik with automatic HTTPS (Let's Encrypt) and the correct CORS origins:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Naofumi-dev/world-cup-detector/main/deploy.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/Naofumi-dev/world-cup-detector/main/deploy.sh | bash
 ```
 
 Prerequisites: a DNS `A` record for `wcd-api.armageddonvivas.cloud` pointing at
 the VPS, set to **DNS only** in Cloudflare (grey cloud, so the TLS challenge
-reaches the VPS), and ports 80/443 open. Override the domain/CORS via env vars:
+reaches the VPS), Traefik running with a Let's Encrypt certresolver, and ports
+80/443 open. Override any default via env vars:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Naofumi-dev/world-cup-detector/main/deploy.sh \
-  | sudo WCD_DOMAIN=api.example.com WCD_CORS_ORIGINS=https://example.com bash
+  | TRAEFIK_NETWORK=proxy WCD_CERTRESOLVER=le WCD_DOMAIN=api.example.com bash
 ```
 
 Re-running the command pulls the latest code and restarts. Verify:

@@ -1,6 +1,0 @@
-# Caddy reverse proxy with automatic HTTPS (Let's Encrypt).
-# WCD_DOMAIN is injected from deploy/.env (written by deploy.sh).
-# Caddy obtains and renews the TLS certificate on its own — no certbot needed.
-{$WCD_DOMAIN} {
-	reverse_proxy backend:8000
-}
