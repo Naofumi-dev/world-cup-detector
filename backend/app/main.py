@@ -30,7 +30,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="World Cup Detector API", version="1.0.0", lifespan=lifespan)
 
 # Allow the local dev frontend plus any production origins supplied via
-# WCD_CORS_ORIGINS (comma-separated, e.g. the deployed Vercel domain).
+# WCD_CORS_ORIGINS (comma-separated). WCD_CORS_ORIGIN_REGEX additionally allows
+# origins by pattern (e.g. "https://.*\.vercel\.app" to cover Vercel previews).
 _allowed_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
 _allowed_origins += [
     o.strip() for o in os.environ.get("WCD_CORS_ORIGINS", "").split(",") if o.strip()
@@ -39,6 +40,7 @@ _allowed_origins += [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins,
+    allow_origin_regex=os.environ.get("WCD_CORS_ORIGIN_REGEX") or None,
     allow_methods=["*"],
     allow_headers=["*"],
 )
