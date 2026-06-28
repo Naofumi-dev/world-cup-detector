@@ -65,7 +65,7 @@ EOF
 # --- Recreate the stack (removes the orphaned Caddy container).
 cd "$DIR/deploy"
 echo "==> Recreating backend..."
-docker compose up -d --force-recreate --remove-orphans
+docker compose up -d --build --force-recreate --remove-orphans
 
 echo
 docker compose ps
