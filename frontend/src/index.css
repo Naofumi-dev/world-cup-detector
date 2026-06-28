@@ -273,11 +273,12 @@ body::after {
   padding: 11px 8px; border-radius: 8px; cursor: pointer;
   border: 1px solid transparent; transition: background 0.15s, border-color 0.15s;
 }
-.rank-row:hover { background: rgba(62, 224, 122, 0.06); border-color: var(--line); }
+.rank-row:hover, .rank-row:active { background: rgba(62, 224, 122, 0.06); border-color: var(--line); }
+.rank-row > div { min-width: 0; }   /* let the name column shrink + ellipsis */
 .rank-row .pos { font-family: var(--font-display); font-size: 18px; color: var(--text-faint); text-align: center; }
 .rank-row:nth-child(1) .pos { color: var(--gold); }
 .rank-row:nth-child(2) .pos, .rank-row:nth-child(3) .pos { color: var(--grass); }
-.rank-row .name { font-weight: 600; font-size: 15px; }
+.rank-row .name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rank-row .meta { font-size: 11px; color: var(--text-faint); font-family: var(--font-mono); }
 .rank-row .elo { font-family: var(--font-mono); font-weight: 600; font-size: 15px; color: var(--text); }
 .rank-row .elobar { height: 3px; border-radius: 2px; background: var(--grass); margin-top: 5px; opacity: 0.5; }
@@ -290,7 +291,7 @@ body::after {
   padding: 11px 6px; border-bottom: 1px solid var(--line);
 }
 .match-row:last-child { border-bottom: none; }
-.match-row .t { font-size: 14px; font-weight: 600; }
+.match-row .t { font-size: 14px; font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .match-row .t.h { text-align: right; }
 .match-row .t.win { color: var(--grass); }
 .match-row .score {
@@ -404,8 +405,10 @@ body::after {
   transition: border-color 0.2s, transform 0.2s;
 }
 .stat-tile:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.stat-tile:active { border-color: var(--line-strong); }
 .stat-tile .k { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); }
-.stat-tile .v { font-family: var(--font-display); font-size: 26px; margin-top: 6px; line-height: 1; }
+.stat-tile .v { font-family: var(--font-display); font-size: 26px; margin-top: 6px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stat-tile .v.good { color: var(--grass); }
 .stat-tile .sub { font-size: 11px; color: var(--text-faint); margin-top: 5px; }
 
@@ -474,6 +477,7 @@ body::after {
   padding: 7px 13px; cursor: pointer; transition: all 0.18s; white-space: nowrap;
 }
 .feat-chip:hover { border-color: var(--grass); color: var(--text); transform: translateY(-1px); }
+.feat-chip:active { border-color: var(--grass); color: var(--text); }
 
 /* ============================================================
    HEAD-TO-HEAD FORM GUIDE
@@ -495,6 +499,39 @@ body::after {
 .fg-gap .k { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); }
 .fg-gap .v { font-size: 18px; font-weight: 600; color: var(--text-dim); }
 .chip.sm { width: 20px; height: 20px; border-radius: 5px; font-size: 10px; }
+
+/* ============================================================
+   TOURNAMENT SIMULATOR
+   ============================================================ */
+.sim-controls { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.sim-intro { font-size: 13px; max-width: 62ch; }
+.sim-meta { margin: 16px 0 6px; font-size: 11px; color: var(--text-faint); font-family: var(--font-mono); letter-spacing: 0.04em; }
+.sim-list { display: flex; flex-direction: column; max-height: 540px; overflow-y: auto; }
+.sim-row {
+  display: grid; grid-template-columns: 30px 1fr 96px 66px 66px; align-items: center; gap: 10px;
+  padding: 9px 6px; border-bottom: 1px solid var(--line);
+}
+.sim-row:last-child { border-bottom: none; }
+.sim-row.sim-head {
+  position: sticky; top: 0; z-index: 1; background: var(--panel);
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint);
+  border-bottom: 1px solid var(--line-strong);
+}
+.sim-row:not(.sim-head) { cursor: pointer; border-radius: 6px; transition: background 0.15s; }
+.sim-row:not(.sim-head):hover, .sim-row:not(.sim-head):active { background: rgba(62, 224, 122, 0.07); }
+.sim-row .r { text-align: right; }
+.sim-pos { font-family: var(--font-display); font-size: 16px; color: var(--text-faint); text-align: center; }
+.sim-row:nth-child(2) .sim-pos { color: var(--gold); }   /* leader (head is the 1st child) */
+.sim-team { display: flex; flex-direction: column; min-width: 0; }
+.sim-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sim-grp { font-size: 10px; color: var(--text-faint); font-family: var(--font-mono); }
+.sim-title { position: relative; display: flex; align-items: center; justify-content: flex-end; gap: 8px; overflow: hidden; }
+.sim-title .sim-bar {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  height: 7px; border-radius: 4px; background: linear-gradient(90deg, var(--grass), #15a84d); opacity: 0.45;
+}
+.sim-title b { position: relative; font-family: var(--font-mono); font-size: 13px; color: var(--text); }
+.sim-num { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
 
 /* ============================================================
    TOASTS
@@ -549,9 +586,38 @@ body::after {
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .field:nth-child(2) { order: 3; }
   .metrics { grid-template-columns: 1fr 1fr; }
-  .formguide { gap: 10px; padding: 14px; }
+  /* Stack the head-to-head guide so the two sides don't crush together. */
+  .formguide { grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+  .fg-side.right { text-align: left; align-items: flex-start; }
+  .fg-gap { flex-direction: row; gap: 8px; align-self: flex-start; }
   .fg-name { font-size: 13px; }
   .statband { grid-template-columns: 1fr 1fr; }
   .wordmark h1 { font-size: 30px; }
   .toasts { left: 14px; right: 14px; max-width: none; }
+  /* Simulator: drop the Semis column on narrow screens. */
+  .sim-row { grid-template-columns: 28px 1fr 84px 60px; }
+  .sim-row .c-semi { display: none; }
+}
+
+/* Small phones (e.g. iPhone 7/SE at 375px): final squeeze. */
+@media (max-width: 380px) {
+  .shell { padding: 14px 10px 54px; }
+  .card-body { padding: 14px; }
+  .predictor .card-body { padding: 16px 14px 20px; }
+  .drawer { padding: 18px; }
+  .drawer h3 { font-size: 26px; }
+  .wordmark h1 { font-size: 26px; }
+  .stat-tile .v { font-size: 22px; }
+  .detail-stats { grid-template-columns: repeat(2, 1fr); }
+  /* Simulator: also drop the Final column, keep just the title odds. */
+  .sim-row { grid-template-columns: 24px 1fr 72px; }
+  .sim-row .c-final { display: none; }
+}
+
+/* Comfortable tap targets on touch devices, without changing desktop density. */
+@media (pointer: coarse) {
+  .rank-row, .match-row { padding-top: 14px; padding-bottom: 14px; }
+  .combo-opt { padding-top: 12px; padding-bottom: 12px; }
+  .input, .score-input, .combo-input, .team-select { padding-top: 14px; padding-bottom: 14px; }
+  .sim-row:not(.sim-head) { padding-top: 12px; padding-bottom: 12px; }
 }

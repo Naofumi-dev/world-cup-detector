@@ -1,0 +1,24 @@
+{
+  "name": "FIFA World Cup 2026",
+  "note": "Editable bracket for the tournament simulator. 48 teams in 12 groups of 4; top 2 of each group plus the 8 best third-placed teams advance to a 32-team single-elimination knockout. Team names must match those in the results dataset (data/results.csv) so current Elo/form is used; any name not found falls back to a default 1500 rating and is reported as 'unknown'. Update this list as 2026 qualification finalizes.",
+  "format": {
+    "groups": 12,
+    "group_size": 4,
+    "advance_per_group": 2,
+    "best_thirds": 8
+  },
+  "groups": [
+    { "name": "A", "teams": ["Argentina", "Norway", "Egypt", "Panama"] },
+    { "name": "B", "teams": ["France", "Senegal", "Peru", "Qatar"] },
+    { "name": "C", "teams": ["Brazil", "Switzerland", "Nigeria", "New Zealand"] },
+    { "name": "D", "teams": ["England", "Uruguay", "South Korea", "Saudi Arabia"] },
+    { "name": "E", "teams": ["Spain", "Denmark", "Cameroon", "Costa Rica"] },
+    { "name": "F", "teams": ["Portugal", "Colombia", "Ghana", "Uzbekistan"] },
+    { "name": "G", "teams": ["Netherlands", "Japan", "Algeria", "Jamaica"] },
+    { "name": "H", "teams": ["Belgium", "Croatia", "Ivory Coast", "Chile"] },
+    { "name": "I", "teams": ["Germany", "Mexico", "Tunisia", "Iran"] },
+    { "name": "J", "teams": ["Italy", "United States", "Ecuador", "Paraguay"] },
+    { "name": "K", "teams": ["Canada", "Morocco", "Poland", "Australia"] },
+    { "name": "L", "teams": ["Serbia", "Austria", "Ukraine", "Sweden"] }
+  ]
+}

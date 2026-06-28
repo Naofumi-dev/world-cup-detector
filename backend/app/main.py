@@ -12,7 +12,7 @@ from . import predictor
 from .db import SessionLocal
 from .ingest import ensure_seeded
 from .models import Match
-from .routers import matches, model, predict, teams
+from .routers import matches, model, predict, teams, tournament
 
 
 @asynccontextmanager
@@ -49,6 +49,7 @@ app.include_router(teams.router, prefix="/api")
 app.include_router(matches.router, prefix="/api")
 app.include_router(predict.router, prefix="/api")
 app.include_router(model.router, prefix="/api")
+app.include_router(tournament.router, prefix="/api")
 
 
 @app.get("/api/health")
