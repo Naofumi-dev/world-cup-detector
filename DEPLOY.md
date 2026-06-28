@@ -11,6 +11,33 @@ persist. Deploy the backend first — the frontend needs its public URL.
 The app self-seeds from `data/results.csv` and trains the model on first start,
 so no database setup is required.
 
+### Option 0 — One command (recommended)
+
+Run this on the VPS. It installs Docker if missing, clones the repo, and starts
+the backend behind **Caddy** (automatic HTTPS via Let's Encrypt — no certbot):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Naofumi-dev/world-cup-detector/main/deploy.sh | sudo bash
+```
+
+Prerequisites: a DNS `A` record for `wcd-api.armageddonvivas.cloud` pointing at
+the VPS, set to **DNS only** in Cloudflare (grey cloud, so the TLS challenge
+reaches the VPS), and ports 80/443 open. Override the domain/CORS via env vars:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Naofumi-dev/world-cup-detector/main/deploy.sh \
+  | sudo WCD_DOMAIN=api.example.com WCD_CORS_ORIGINS=https://example.com bash
+```
+
+Re-running the command pulls the latest code and restarts. Verify:
+
+```bash
+curl -s https://wcd-api.armageddonvivas.cloud/api/health   # {"status":"ok"}
+```
+
+The manual options below (A/B) remain available if you prefer to wire up nginx
+and certbot yourself.
+
 ### Option A — Docker (simplest)
 
 ```bash

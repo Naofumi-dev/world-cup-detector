@@ -17,5 +17,8 @@ frontend/dist/
 .claude/
 *.log
 
+# Deploy runtime env (generated on the VPS by deploy.sh)
+deploy/.env
+
 # OS
 .DS_Store
