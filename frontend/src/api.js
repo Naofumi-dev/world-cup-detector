@@ -35,4 +35,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify(runs ? { runs } : {}),
     }),
+  fixtures: () => request("/fixtures"),
+  accuracy: () => request("/accuracy"),
 };

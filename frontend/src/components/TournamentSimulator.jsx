@@ -2,6 +2,7 @@
 // each nation's odds to win the title / reach the final / reach the semis.
 import { useState } from "react";
 import { api } from "../api.js";
+import { drawSimCard, shareCanvas } from "../share.js";
 
 const pct = (x) => (x >= 0.0995 ? Math.round(x * 100) : (x * 100).toFixed(1));
 
@@ -36,17 +37,34 @@ export default function TournamentSimulator({ onSelect }) {
             Plays the 2026 World Cup thousands of times using the model’s match
             probabilities to estimate every nation’s odds of going all the way.
           </p>
-          <button className="btn btn-primary" onClick={run} disabled={loading}>
-            {loading ? (
-              <>
-                <span className="spin" />&nbsp; Simulating…
-              </>
-            ) : data ? (
-              "Re-run"
-            ) : (
-              "Simulate tournament"
+          <div className="sim-actions">
+            <button className="btn btn-primary" onClick={run} disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spin" />&nbsp; Simulating…
+                </>
+              ) : data ? (
+                "Re-run"
+              ) : (
+                "Simulate tournament"
+              )}
+            </button>
+            {data && (
+              <button
+                className="btn btn-ghost"
+                onClick={async () => {
+                  const canvas = await drawSimCard(data.teams, data.runs);
+                  await shareCanvas(
+                    canvas,
+                    "wcd-2026-title-odds.png",
+                    "Who wins the 2026 World Cup? Simulated odds from World Cup Detector"
+                  );
+                }}
+              >
+                📤 Share
+              </button>
             )}
-          </button>
+          </div>
         </div>
 
         {error && <div className="banner" style={{ marginTop: 14 }}>{error}</div>}
