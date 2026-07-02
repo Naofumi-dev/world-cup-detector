@@ -36,6 +36,9 @@ def build_matches(n=500, seed=1):
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
+    # Never let a token exported in the dev/CI shell start a real live-data
+    # poller (network + real DB) inside the app lifespan during tests.
+    monkeypatch.delenv("WCD_FOOTBALL_API_TOKEN", raising=False)
     engine = create_engine(
         f"sqlite:///{tmp_path / 't.db'}", connect_args={"check_same_thread": False}
     )
