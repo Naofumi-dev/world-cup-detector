@@ -385,6 +385,18 @@ body::after {
 .muted { color: var(--text-dim); }
 .empty { color: var(--text-faint); font-size: 13px; padding: 16px 0; text-align: center; }
 
+/* ---------- footer ---------- */
+.footer {
+  margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.foot-note { font-size: 12px; color: var(--text-faint); max-width: 60ch; }
+.foot-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.foot-links a { color: var(--text-dim); font-size: 13px; text-decoration: none; }
+.foot-links a:hover { color: var(--grass); }
+.btn.btn-sm { padding: 9px 16px; font-size: 12px; }
+
 /* ---------- keyframes ---------- */
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @keyframes drop { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }

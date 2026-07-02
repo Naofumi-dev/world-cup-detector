@@ -213,6 +213,33 @@ export default function App() {
             <TournamentSimulator onSelect={openDetail} />
           </div>
         )}
+
+        <footer className="footer">
+          <p className="foot-note">
+            Predictions are the output of a statistical model, for entertainment
+            and educational purposes only — not betting advice.
+          </p>
+          <nav className="foot-links">
+            {import.meta.env.VITE_KOFI_URL && (
+              <a
+                className="btn btn-ghost btn-sm"
+                href={import.meta.env.VITE_KOFI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ☕ Support this project
+              </a>
+            )}
+            <a href="/privacy.html">Privacy</a>
+            <a
+              href="https://github.com/Naofumi-dev/world-cup-detector"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </nav>
+        </footer>
       </div>
 
       {detail && (
