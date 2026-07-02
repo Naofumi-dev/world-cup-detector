@@ -26,7 +26,7 @@ export default function TournamentSimulator({ onSelect }) {
   const maxTitle = data?.teams?.[0]?.win_title || 1;
 
   return (
-    <section className="card sim d1">
+    <section className="card sim d1" id="simulator">
       <div className="card-head">
         <h2>World Cup Simulator</h2>
         <span className="tag">Monte-Carlo · 2026</span>

@@ -93,7 +93,10 @@ export default function Predictor({ teams, eloMap, prediction, loading, onPredic
   return (
     <section className="card predictor flow d1">
       <div className="card-head">
-        <h2>Match Predictor</h2>
+        <div className="card-head-l">
+          <h2>Match Predictor</h2>
+          <span className="head-hint">Pick two teams to see who wins →</span>
+        </div>
         <span className="tag">{loading ? <><span className="spin" /> updating</> : "live · auto-updates"}</span>
       </div>
       <div className="card-body">
