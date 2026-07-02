@@ -33,7 +33,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
@@ -102,7 +102,8 @@ body::after {
   border-bottom: 1px solid var(--line);
   animation: drop 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
-.wordmark { display: flex; align-items: center; gap: 16px; }
+.wordmark { display: flex; align-items: flex-start; gap: 16px; }
+.wordmark .crest { margin-top: 3px; }
 .crest {
   width: 50px; height: 50px; border-radius: 12px;
   display: grid; place-items: center; flex-shrink: 0;
@@ -115,7 +116,55 @@ body::after {
   text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.9;
 }
 .wordmark h1 b { color: var(--grass); font-weight: 400; }
-.wordmark .sub { color: var(--text-dim); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-top: 4px; }
+.wordmark-text { min-width: 0; }
+.wordmark .sub { color: var(--text-dim); font-size: 14px; line-height: 1.45; margin-top: 7px; max-width: 52ch; }
+.sub-short { display: none; }
+@media (max-width: 640px) {
+  .sub-long { display: none; }
+  .sub-short { display: inline; }
+}
+
+/* trust bar */
+.trustbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.trust-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--text-dim);
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: 99px; padding: 5px 12px; white-space: nowrap;
+}
+.trust-pill.good { color: var(--grass); border-color: var(--grass-deep); }
+.trust-pill.live { color: var(--coral); border-color: var(--coral-deep); }
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--coral);
+  box-shadow: 0 0 0 0 rgba(255, 107, 66, 0.6); animation: livepulse 1.8s infinite;
+}
+@keyframes livepulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 107, 66, 0.55); }
+  70% { box-shadow: 0 0 0 7px rgba(255, 107, 66, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 107, 66, 0); }
+}
+
+/* "Simulate the World Cup" masthead CTA */
+.sim-cta { flex-shrink: 0; text-decoration: none; }
+
+/* dismissible explainer */
+.explainer {
+  display: flex; align-items: center; gap: 12px; margin-top: 16px;
+  padding: 10px 14px; border-radius: 10px;
+  background: rgba(62, 224, 122, 0.05); border: 1px solid var(--line);
+}
+.explainer-text { font-size: 13px; color: var(--text-dim); }
+.explainer-text b { color: var(--text); font-weight: 700; }
+.explainer-x {
+  margin-left: auto; flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px;
+  background: transparent; border: 1px solid var(--line-strong); color: var(--text-dim);
+  cursor: pointer; font-size: 16px; line-height: 1;
+}
+.explainer-x:hover { color: var(--coral); border-color: var(--coral); }
+
+/* predictor head hint */
+.card-head-l { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; min-width: 0; }
+.head-hint { font-size: 12px; color: var(--text-faint); }
 
 /* model strip in masthead */
 .model-strip { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }

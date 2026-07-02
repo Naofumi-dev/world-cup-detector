@@ -9,6 +9,8 @@ import TeamDetail from "./components/TeamDetail.jsx";
 import StatBand from "./components/StatBand.jsx";
 import TournamentSimulator from "./components/TournamentSimulator.jsx";
 import UpcomingMatches from "./components/UpcomingMatches.jsx";
+import TrustBar from "./components/TrustBar.jsx";
+import Explainer from "./components/Explainer.jsx";
 import Toasts from "./components/Toasts.jsx";
 
 export default function App() {
@@ -144,28 +146,30 @@ export default function App() {
         <header className="masthead">
           <div className="wordmark">
             <div className="crest">W</div>
-            <div>
+            <div className="wordmark-text">
               <h1>World <b>Cup</b> Detector</h1>
-              <div className="sub">Live match-outcome intelligence · 2026</div>
+              <p className="sub">
+                <span className="sub-long">
+                  Who wins the 2026 World Cup? Live Win / Draw / Loss predictions
+                  for every match, from a model trained on 49,000 internationals.
+                </span>
+                <span className="sub-short">
+                  Live 2026 World Cup match predictions · 49,000 games of history.
+                </span>
+              </p>
+              <TrustBar
+                model={model}
+                teamsCount={teams.length}
+                live={fixtures.length > 0 || (liveAccuracy?.n ?? 0) > 0}
+              />
             </div>
           </div>
-          {model && (
-            <div className="model-strip">
-              <div className="stat-mini">
-                <span className="k">Accuracy</span>
-                <span className="v good">{Math.round(model.accuracy * 100)}%</span>
-              </div>
-              <div className="stat-mini">
-                <span className="k">Log loss</span>
-                <span className="v">{model.log_loss}</span>
-              </div>
-              <div className="stat-mini">
-                <span className="k">Matches</span>
-                <span className="v">{model.n_samples.toLocaleString()}</span>
-              </div>
-            </div>
-          )}
+          <a className="btn btn-ghost sim-cta" href="#simulator">
+            🏆 Simulate the World Cup
+          </a>
         </header>
+
+        <Explainer />
 
         <StatBand
           teamsCount={teams.length}
