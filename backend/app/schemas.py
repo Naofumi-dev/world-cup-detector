@@ -100,6 +100,21 @@ class TeamDetail(BaseModel):
     rating_history: list[RatingPoint]
 
 
+class FixtureOut(BaseModel):
+    utc_date: str
+    home: str
+    away: str
+    stage: str | None = None
+    probabilities: Probabilities
+    most_likely: str
+
+
+class AccuracyOut(BaseModel):
+    n: int
+    correct: int
+    accuracy: float | None = None
+
+
 class TournamentRequest(BaseModel):
     runs: int = Field(default=3000, ge=100, le=20000)
 

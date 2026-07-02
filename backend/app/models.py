@@ -27,6 +27,32 @@ class Team(Base):
     )
 
 
+class PredictionLog(Base):
+    """Pre-match model prediction for an auto-ingested result.
+
+    Written just before the result is applied (current team state IS the
+    pre-match state), so accuracy can be reported honestly over live matches.
+    """
+
+    __tablename__ = "prediction_log"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[date] = mapped_column(Date, index=True)
+    home_team: Mapped[str] = mapped_column(String)
+    away_team: Mapped[str] = mapped_column(String)
+    home_score: Mapped[int] = mapped_column(Integer)
+    away_score: Mapped[int] = mapped_column(Integer)
+    p_home: Mapped[float] = mapped_column(Float)
+    p_draw: Mapped[float] = mapped_column(Float)
+    p_away: Mapped[float] = mapped_column(Float)
+    predicted: Mapped[str] = mapped_column(String)  # home_win / draw / away_win
+    actual: Mapped[str] = mapped_column(String)
+    correct: Mapped[bool] = mapped_column(Boolean)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc)
+    )
+
+
 class Match(Base):
     __tablename__ = "matches"
 

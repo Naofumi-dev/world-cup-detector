@@ -6,6 +6,8 @@ services:
       # Browser origins allowed to call the API (the deployed frontend).
       WCD_CORS_ORIGINS: ${WCD_CORS_ORIGINS}
       WCD_CORS_ORIGIN_REGEX: ${WCD_CORS_ORIGIN_REGEX}
+      # football-data.org token: enables live result auto-ingest + fixtures.
+      WCD_FOOTBALL_API_TOKEN: ${WCD_FOOTBALL_API_TOKEN:-}
     volumes:
       - wcd-data:/app/data      # SQLite DB persists across restarts
       - wcd-models:/app/models  # trained model persists across restarts

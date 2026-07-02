@@ -385,6 +385,24 @@ body::after {
 .muted { color: var(--text-dim); }
 .empty { color: var(--text-faint); font-size: 13px; padding: 16px 0; text-align: center; }
 
+/* ---------- upcoming matches ---------- */
+.up-row { padding: 11px 6px; border-bottom: 1px solid var(--line); }
+.up-row:last-child { border-bottom: none; }
+.up-teams { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.up-teams .t { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.up-vs { font-size: 11px; color: var(--text-faint); flex-shrink: 0; }
+.up-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin: 8px 0 6px; background: var(--bg-elev); }
+.up-bar .h { background: var(--grass); }
+.up-bar .d { background: var(--gold); }
+.up-bar .a { background: var(--coral); }
+.up-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.up-meta .when { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; }
+.up-meta .fav { font-size: 11px; color: var(--text-dim); }
+
+/* ---------- share ---------- */
+.share-row { margin-top: 12px; display: flex; justify-content: flex-end; }
+.sim-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
 /* ---------- footer ---------- */
 .footer {
   margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line);

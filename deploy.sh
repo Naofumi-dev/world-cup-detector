@@ -20,6 +20,7 @@ DOMAIN="${WCD_DOMAIN:-wcd-api.armageddonvivas.cloud}"
 CORS="${WCD_CORS_ORIGINS:-https://world-cup-detector.vercel.app,https://armageddonvivas.cloud,https://www.armageddonvivas.cloud}"
 CORS_REGEX="${WCD_CORS_ORIGIN_REGEX:-https://.*\.vercel\.app}"
 CERTRESOLVER="${WCD_CERTRESOLVER:-letsencrypt}"
+FOOTBALL_TOKEN="${WCD_FOOTBALL_API_TOKEN:-}"
 
 echo "==> World Cup Detector deploy (Traefik mode)"
 
@@ -54,12 +55,17 @@ else
 fi
 
 # --- Write the runtime env consumed by docker-compose.yml.
+# Preserve a previously-configured football-data token when not supplied.
+if [ -z "$FOOTBALL_TOKEN" ] && [ -f "$DIR/deploy/.env" ]; then
+  FOOTBALL_TOKEN=$(grep -E '^WCD_FOOTBALL_API_TOKEN=' "$DIR/deploy/.env" | head -1 | cut -d= -f2- || true)
+fi
 cat > "$DIR/deploy/.env" <<EOF
 WCD_DOMAIN=$DOMAIN
 WCD_CORS_ORIGINS=$CORS
 WCD_CORS_ORIGIN_REGEX=$CORS_REGEX
 WCD_CERTRESOLVER=$CERTRESOLVER
 TRAEFIK_NETWORK=$NET
+WCD_FOOTBALL_API_TOKEN=$FOOTBALL_TOKEN
 EOF
 
 # --- Recreate the stack (removes the orphaned Caddy container).

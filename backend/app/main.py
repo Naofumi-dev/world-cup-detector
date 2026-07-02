@@ -1,18 +1,19 @@
 """FastAPI application entrypoint for the World Cup Detector."""
 from __future__ import annotations
 
+import asyncio
 import os
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select
 
-from . import predictor
+from . import livedata, predictor
 from .db import SessionLocal
 from .ingest import ensure_seeded
 from .models import Match
-from .routers import matches, model, predict, teams, tournament
+from .routers import live, matches, model, predict, teams, tournament
 
 
 @asynccontextmanager
@@ -24,7 +25,16 @@ async def lifespan(app: FastAPI):
         with SessionLocal() as session:
             rows = session.execute(select(Match).order_by(Match.date, Match.id)).scalars().all()
             predictor.train(rows)
+    # Auto-ingest live results in the background (dormant without a token).
+    poller = None
+    if os.environ.get("WCD_FOOTBALL_API_TOKEN", "").strip():
+        poller = asyncio.create_task(livedata.poll_forever())
     yield
+    if poller is not None:
+        livedata._shutdown.set()  # stop an in-flight ingest batch promptly
+        poller.cancel()
+        with suppress(asyncio.CancelledError):
+            await poller
 
 
 app = FastAPI(title="World Cup Detector API", version="1.0.0", lifespan=lifespan)
@@ -50,6 +60,7 @@ app.include_router(matches.router, prefix="/api")
 app.include_router(predict.router, prefix="/api")
 app.include_router(model.router, prefix="/api")
 app.include_router(tournament.router, prefix="/api")
+app.include_router(live.router, prefix="/api")
 
 
 @app.get("/api/health")

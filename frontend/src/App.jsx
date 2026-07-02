@@ -8,6 +8,7 @@ import ModelStatus from "./components/ModelStatus.jsx";
 import TeamDetail from "./components/TeamDetail.jsx";
 import StatBand from "./components/StatBand.jsx";
 import TournamentSimulator from "./components/TournamentSimulator.jsx";
+import UpcomingMatches from "./components/UpcomingMatches.jsx";
 import Toasts from "./components/Toasts.jsx";
 
 export default function App() {
@@ -15,6 +16,8 @@ export default function App() {
   const [rankings, setRankings] = useState([]);
   const [matches, setMatches] = useState([]);
   const [model, setModel] = useState(null);
+  const [fixtures, setFixtures] = useState([]);
+  const [liveAccuracy, setLiveAccuracy] = useState(null);
 
   const [prediction, setPrediction] = useState(null);
   const [lastFixture, setLastFixture] = useState(null);
@@ -53,16 +56,20 @@ export default function App() {
   }, []);
 
   const loadCore = useCallback(async () => {
-    const [tm, rk, mt, md] = await Promise.all([
+    const [tm, rk, mt, md, fx, acc] = await Promise.all([
       api.teams(),
       api.rankings(20),
       api.matches(12),
       api.model().catch(() => null),
+      api.fixtures().catch(() => []),
+      api.accuracy().catch(() => null),
     ]);
     setTeams(tm);
     setRankings(rk);
     setMatches(mt);
     setModel(md);
+    setFixtures(fx);
+    setLiveAccuracy(acc);
   }, []);
 
   useEffect(() => {
@@ -165,6 +172,7 @@ export default function App() {
           matchesCount={model?.n_samples}
           topTeam={rankings[0]}
           model={model}
+          liveAccuracy={liveAccuracy}
         />
 
         {error && <div className="banner">{error}</div>}
@@ -199,6 +207,7 @@ export default function App() {
                 <Rankings teams={rankings} onSelect={openDetail} />
               </div>
               <div className="col">
+                <UpcomingMatches fixtures={fixtures} onSelect={openDetail} />
                 <AddResult
                   teams={teamIndex}
                   onSubmit={submitResult}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import TeamCombobox from "./TeamCombobox.jsx";
 import ProbabilityBar from "./ProbabilityBar.jsx";
+import { drawMatchCard, shareCanvas } from "../share.js";
 
 const FEATURED = [
   ["Brazil", "Argentina"],
@@ -142,6 +143,21 @@ export default function Predictor({ teams, eloMap, prediction, loading, onPredic
         ) : prediction && prediction.home === home && prediction.away === away ? (
           <>
             <ProbabilityBar prediction={prediction} />
+            <div className="share-row">
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={async () => {
+                  const canvas = await drawMatchCard(prediction);
+                  await shareCanvas(
+                    canvas,
+                    `wcd-${prediction.home}-vs-${prediction.away}.png`.replace(/\s+/g, "-").toLowerCase(),
+                    `${prediction.home} vs ${prediction.away} — my World Cup Detector prediction`
+                  );
+                }}
+              >
+                📤 Share this prediction
+              </button>
+            </div>
             <FormGuide prediction={prediction} rankOf={rankOf} />
           </>
         ) : (
